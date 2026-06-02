@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wedding Celebration</title>
+    <link rel="stylesheet" href="invitation.css">
+</head>
+<body>
+
+    <nav class="top-nav">
+        <a href="index.html" class="logo-link">
+            <img src="png/logo.png" alt="Wedding Logo" class="nav-logo">
+        </a>
+    </nav>
+
+    <div class="scroll-wrapper">
+        
+        <section class="hero-container">
+            <div class="hero-content">
+                <header class="content-header">
+                    <h2 class="section-subtitle">A Promise for a Lifetime</h2>
+                </header>
+
+                <div class="countdown-section">
+                    <h3 class="countdown-title">COUNTDOWN TO OUR DAY</h3>
+                    
+                    <div id="countdownClock" class="clock-display">
+                        <div class="time-block">
+                            <span id="days" class="time-number">00</span>
+                            <span class="time-label">Days</span>
+                        </div>
+                        
+                        <div class="time-separator">:</div>
+
+                        <div class="time-block">
+                            <span id="hours" class="time-number">00</span>
+                            <span class="time-label">Hours</span>
+                        </div>
+                        
+                        <div class="time-separator">:</div>
+
+                        <div class="time-block">
+                            <span id="minutes" class="time-number">00</span>
+                            <span class="time-label">Minutes</span>
+                        </div>
+                        
+                        <div class="time-separator">:</div>
+
+                        <div class="time-block">
+                            <span id="seconds" class="time-number">00</span>
+                            <span class="time-label">Seconds</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="framed-details-section">
+            <div class="border-frame-inner">
+                <div class="framed-content">
+                    <p>Scroll further down to reveal Event Timeline, Map Locations, and RSVP Cards...</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const targetEventDate = new Date("June 25, 2026 10:00:00").getTime();
+
+        function updateCountdownClock() {
+            const rightNow = new Date().getTime();
+            const timeDifference = targetEventDate - rightNow;
+
+            const daysCalculated = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hoursCalculated = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutesCalculated = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const secondsCalculated = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            if (timeDifference > 0) {
+                document.getElementById("days").innerText = String(daysCalculated).padStart(2, '0');
+                document.getElementById("hours").innerText = String(hoursCalculated).padStart(2, '0');
+                document.getElementById("minutes").innerText = String(minutesCalculated).padStart(2, '0');
+                document.getElementById("seconds").innerText = String(secondsCalculated).padStart(2, '0');
+            } else {
+                clearInterval(clockIntervalEngine);
+                document.getElementById("countdownClock").innerHTML = "<p class='event-started-msg'>THE CELEBRATION HAS BEGUN!</p>";
+            }
+        }
+
+        updateCountdownClock();
+        const clockIntervalEngine = setInterval(updateCountdownClock, 1000);
+    </script>
+</body>
+</html>

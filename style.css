@@ -1,0 +1,144 @@
+/* ==========================================================================
+   1. Custom Font Loading (@font-face)
+   ========================================================================= */
+@font-face {
+    font-family: 'PP Editorial New';
+    src: url('PPEditorialNew-Regular-BF644b214ff145f.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* ==========================================================================
+   2. Reset & Minimalist Layout
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: hsl(40, 100%, 98%); 
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    padding: 5vw;
+}
+
+/* ==========================================================================
+   3. Absolute Proportional Sizing
+   ========================================================================== */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    
+    /* Strict fluid layout gap between items */
+    gap: 3.5vw; 
+}
+
+/* Subtitle and Caption Scale Uniformly */
+.wedding-subtitle, .click-caption {
+    font-family: 'PP Editorial New', serif;
+    color: #4a3e3d;
+    font-weight: 400;
+    text-transform: uppercase;
+    
+    font-size: 1.25vw; 
+    letter-spacing: 0.35vw; 
+    line-height: 1.2;
+}
+
+/* ==========================================================================
+   4. Image Asset Proportions (Names & Envelope)
+   ========================================================================== */
+.names-container, .envelope-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Envelope floating wrapper animation */
+.envelope-container {
+    animation: floatAnimation 3.2s ease-in-out infinite; 
+}
+
+/* Fluid Name Image Scale */
+.names-img {
+    width: 32vw; /* Scales exactly like an image alongside the envelope */
+    height: auto;
+    display: block;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Fluid Envelope Image Scale */
+.envelope-img {
+    width: 42vw; 
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    filter: drop-shadow(0 1vw 2.5vw rgba(0, 0, 0, 0.06)); 
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.envelope-img:hover {
+    transform: scale(1.02); 
+}
+
+.envelope-img:active {
+    transform: scale(0.97); 
+}
+
+/* ==========================================================================
+   5. Premium Transition & Animation Keyframes
+   ========================================================================== */
+.page-transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: hsl(40, 100%, 98%); 
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none; 
+    transition: opacity 0.75s cubic-bezier(0.25, 1, 0.5, 1); 
+}
+
+.page-transition-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+@keyframes floatAnimation {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-0.8vw); } 
+    100% { transform: translateY(0px); }
+}
+
+/* ==========================================================================
+   6. Mobile Optimization Override (Strictly for very narrow mobile screens)
+   ========================================================================== */
+@media (max-width: 600px) {
+    .main-container {
+        gap: 6vw;
+    }
+    .wedding-subtitle, .click-caption {
+        font-size: 3vw;
+        letter-spacing: 0.6vw;
+    }
+    .names-img {
+        width: 62vw;
+    }
+    .envelope-img {
+        width: 72vw;
+    }
+}

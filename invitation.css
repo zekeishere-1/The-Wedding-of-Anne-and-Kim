@@ -1,0 +1,301 @@
+/* ==========================================================================
+   1. Brand Font Ecosystem Loading (Ultralight .otf)
+   ========================================================================= */
+@font-face {
+    font-family: 'PP Editorial New';
+    src: url('fonts/PPEditorialNew-Ultralight-BF644b21500d0c0.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* ==========================================================================
+   2. Reset, Base Architecture & Smooth Scrolling
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: hsl(40, 100%, 98%); 
+    min-height: 100vh;
+    width: 100vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; 
+    animation: fadeInInvitationPage 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* ==========================================================================
+   3. Centered Logo Navigation
+   ========================================================================= */
+.top-nav {
+    position: absolute;
+    top: 3vw;  
+    left: 50%; 
+    transform: translateX(-50%); 
+    z-index: 100;
+}
+
+.logo-link {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.nav-logo {
+    width: 7.5vw; 
+    height: auto;
+    display: block;
+    opacity: 0.9;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-logo:hover {
+    opacity: 1;
+    transform: scale(1.03);
+}
+
+/* ==========================================================================
+   4. Scroll Content Wrapper Layout
+   ========================================================================= */
+.scroll-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* ==========================================================================
+   5. Full-Window Hero Section with Apple Liquid Glass Card
+   ========================================================================= */
+.hero-container {
+    width: 100vw;
+    height: 100vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('png/flowers1.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover; 
+    padding: 2rem;
+    position: relative;
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 900px; 
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.35); 
+    -webkit-backdrop-filter: blur(24px); 
+    backdrop-filter: blur(24px); 
+    border: 1px solid rgba(255, 255, 255, 0.45); 
+    border-radius: 24px; 
+    padding: clamp(2rem, 5vw, 4rem);
+    padding-top: clamp(5rem, 9vw, 7.5rem); 
+    box-shadow: 
+        0 4px 30px rgba(0, 0, 0, 0.03),
+        0 30px 70px rgba(74, 62, 61, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2); 
+}
+
+/* ==========================================================================
+   6. Typography Headers
+   ========================================================================== */
+.content-header {
+    text-align: center;
+    margin-bottom: 2rem; 
+}
+
+.section-subtitle {
+    font-family: 'PP Editorial New', serif;
+    color: #3d3332; 
+    font-weight: 200; 
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    font-size: clamp(16px, 2vw, 26px);
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4); 
+}
+
+/* ==========================================================================
+   7. Countdown Design Block
+   ========================================================================== */
+.countdown-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.countdown-title {
+    font-family: 'PP Editorial New', serif;
+    color: #4a3e3d;
+    font-weight: 200;
+    letter-spacing: 3px;
+    font-size: clamp(11px, 1.1vw, 13px);
+    margin-bottom: 1.5rem;
+}
+
+.clock-display {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    gap: clamp(1rem, 2.5vw, 2.5rem); 
+    width: 100%;
+}
+
+.time-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.time-number {
+    font-family: 'PP Editorial New', serif;
+    color: hsl(24, 77%, 54%); 
+    font-size: clamp(36px, 4.5vw, 64px); 
+    font-weight: 200; 
+    line-height: 1;
+}
+
+.time-label {
+    font-family: 'PP Editorial New', serif;
+    color: #615453; 
+    text-transform: uppercase;
+    font-size: clamp(10px, 0.9vw, 11px);
+    letter-spacing: 1px;
+    margin-top: 0.5rem;
+    font-weight: 200;
+}
+
+.time-separator {
+    font-family: 'PP Editorial New', serif;
+    color: hsl(24, 77%, 54%);
+    font-size: clamp(36px, 4.5vw, 64px);
+    font-weight: 200;
+    line-height: 0.95; 
+    user-select: none;
+}
+
+.event-started-msg {
+    font-family: 'PP Editorial New', serif;
+    color: hsl(24, 77%, 54%);
+    font-size: 24px;
+    letter-spacing: 2px;
+}
+
+/* ==========================================================================
+   8. CLEAN UPDATED: Fluid Border Framed Section (No Corner Images)
+   ========================================================================== */
+.framed-details-section {
+    min-height: 100vh; 
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: hsl(40, 100%, 98%);
+    padding: 3vw; /* Creates the outer fluid margin edge */
+}
+
+/* A clean CSS border lining that scales flawlessly with browser window size */
+.border-frame-inner {
+    width: 100%;
+    height: 100%;
+    min-height: calc(100vh - 6vw); /* Adjusts dynamically to perfectly track the viewport height minus padding */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #e3d1c4; /* Soft elegant line color matching your copper layout details */
+    padding: 4rem;
+}
+
+/* Structural content formatting layout inside the text space */
+.framed-content {
+    font-family: 'PP Editorial New', serif;
+    color: #bfaea2;
+    letter-spacing: 1px;
+    font-size: 14px;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: 200;
+    max-width: 600px;
+}
+
+/* ==========================================================================
+   9. Entry Animation Keyframes
+   ========================================================================== */
+@keyframes fadeInInvitationPage {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ==========================================================================
+   10. Mobile Responsiveness Adjustments
+   ========================================================================== */
+@media (max-width: 600px) {
+    .top-nav {
+        top: 6vw; 
+    }
+    
+    .nav-logo {
+        width: 15vw; 
+    }
+    
+    .hero-content {
+        width: 90%;          
+        max-width: 100%;
+        padding: 2rem 1rem;  
+        padding-top: 5.5rem; 
+        border-radius: 16px; 
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+    }
+
+    .content-header {
+        width: 100%;
+        text-align: center;
+    }
+
+    .countdown-section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .clock-display {
+        width: 100%;
+        justify-content: center; 
+        gap: 0.3rem; 
+    }
+
+    .time-block {
+        min-width: 55px; 
+        text-align: center;
+    }
+
+    .time-number {
+        font-size: 28px; 
+    }
+
+    .time-separator {
+        line-height: 0.85;
+        font-size: 28px;
+    }
+
+    /* Keeps the inline frame borders beautifully balanced on slim phone windows */
+    .framed-details-section {
+        padding: 5vw;
+    }
+    
+    .border-frame-inner {
+        min-height: calc(100vh - 10vw);
+        padding: 2rem 1rem;
+    }
+}
