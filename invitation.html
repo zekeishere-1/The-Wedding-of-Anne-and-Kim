@@ -5,19 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Wedding Celebration</title>
     <link rel="stylesheet" href="invitation.css">
+    <script src="audioManager.js"></script>
 </head>
 <body>
 
     <nav class="top-nav">
         <a href="index.html" class="logo-link">
-            <img src="png/logo.png" alt="Wedding Logo" class="nav-logo">
+            <img src="png/logo.png" alt="Wedding Logo" id="navLogo" class="nav-logo">
         </a>
     </nav>
 
     <div class="scroll-wrapper">
         
-        <section class="hero-container">
-            <div class="hero-content">
+        <section id="heroSection" class="hero-container">
+            <div id="heroContent" class="hero-content">
                 <header class="content-header">
                     <h2 class="section-subtitle">A Promise for a Lifetime</h2>
                 </header>
@@ -25,36 +26,43 @@
                 <div class="countdown-section">
                     <h3 class="countdown-title">COUNTDOWN TO OUR DAY</h3>
                     
-                    <!-- Cleaned: Separator elements completely removed -->
                     <div id="countdownClock" class="clock-display">
                         <div class="time-block">
                             <span id="days" class="time-number">00</span>
                             <span class="time-label">Days</span>
                         </div>
-
                         <div class="time-block">
                             <span id="hours" class="time-number">00</span>
                             <span class="time-label">Hours</span>
                         </div>
-
                         <div class="time-block">
                             <span id="minutes" class="time-number">00</span>
                             <span class="time-label">Minutes</span>
                         </div>
-
                         <div class="time-block">
                             <span id="seconds" class="time-number">00</span>
                             <span class="time-label">Seconds</span>
                         </div>
                     </div>
                 </div>
+
+                <div class="scroll-notice">
+                    <span class="scroll-text">Scroll to View Invitation</span>
+                    <div class="scroll-line"></div>
+                </div>
             </div>
         </section>
 
-        <section class="framed-details-section">
-            <div class="border-frame-inner">
-                <div class="framed-content">
-                    <p>TO BE UPDATED...</p>
+        <section id="curtainSection" class="framed-details-section">
+            <div class="paper-stack-deck" id="paperStackDeck">
+                <div class="paper-card" style="--card-index: 0;">
+                    <img src="png/page1.png" alt="Invitation Sheet 1" class="paper-img">
+                </div>
+                <div class="paper-card" style="--card-index: 1;">
+                    <img src="png/page2.png" alt="Invitation Sheet 2" class="paper-img">
+                </div>
+                <div class="paper-card" style="--card-index: 2;">
+                    <img src="png/page3.png" alt="Invitation Sheet 3" class="paper-img">
                 </div>
             </div>
         </section>
@@ -62,22 +70,44 @@
     </div>
 
     <script>
+        /* ==========================================================================
+           1. Global Interaction Triggers
+           ========================================================================== */
+        function triggerAudioUnlock() {
+            audioManager.init();
+            window.removeEventListener('click', triggerAudioUnlock);
+            window.removeEventListener('touchstart', triggerAudioUnlock);
+            window.removeEventListener('scroll', triggerAudioUnlock);
+        }
+
+        window.addEventListener('click', triggerAudioUnlock);
+        window.addEventListener('touchstart', triggerAudioUnlock);
+        window.addEventListener('scroll', triggerAudioUnlock);
+
+        if (window.location.search.includes('startAudio=true')) {
+            triggerAudioUnlock();
+        }
+
+        /* ==========================================================================
+           2. Visual Countdown Timer Logic Engine
+           ========================================================================== */
         const targetEventDate = new Date("June 25, 2026 10:00:00").getTime();
 
         function updateCountdownClock() {
             const rightNow = new Date().getTime();
             const timeDifference = targetEventDate - rightNow;
 
-            const daysCalculated = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-            const hoursCalculated = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutesCalculated = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-            const secondsCalculated = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
             if (timeDifference > 0) {
-                document.getElementById("days").innerText = String(daysCalculated).padStart(2, '0');
-                document.getElementById("hours").innerText = String(hoursCalculated).padStart(2, '0');
-                document.getElementById("minutes").innerText = String(minutesCalculated).padStart(2, '0');
-                document.getElementById("seconds").innerText = String(secondsCalculated).padStart(2, '0');
+                const totalSecs = Math.floor(timeDifference / 1000);
+                const days = Math.floor(totalSecs / (60 * 60 * 24));
+                const hours = Math.floor((totalSecs % (60 * 60 * 24)) / (60 * 60));
+                const minutes = Math.floor((totalSecs % (60 * 60)) / 60);
+                const seconds = totalSecs % 60;
+
+                document.getElementById("days").innerText = String(days).padStart(2, '0');
+                document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+                document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+                document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
             } else {
                 clearInterval(clockIntervalEngine);
                 document.getElementById("countdownClock").innerHTML = "<p class='event-started-msg'>THE CELEBRATION HAS BEGUN!</p>";
@@ -85,7 +115,72 @@
         }
 
         updateCountdownClock();
-        const clockIntervalEngine = setInterval(updateCountdownClock, 1000);
+        const clockIntervalEngine = setInterval(updateCountdownClock, 1000); // Set back to standard smooth 1-second ticks
+
+        /* ==========================================================================
+           3. Viewport Transitions & Scroll Layout Tracking
+           ========================================================================== */
+        const logoElement = document.getElementById('navLogo');
+        const curtainSection = document.getElementById('curtainSection');
+        const heroContent = document.getElementById('heroContent');
+
+        window.addEventListener('scroll', () => {
+            const scrollValue = window.scrollY;
+            const windowHeight = window.innerHeight;
+
+            if (scrollValue <= windowHeight) {
+                const fadePercentage = 1 - (scrollValue / (windowHeight * 0.7));
+                const scalePercentage = 1 - (scrollValue / (windowHeight * 5));
+                
+                heroContent.style.opacity = Math.max(fadePercentage, 0);
+                heroContent.style.transform = `scale(${Math.max(scalePercentage, 0.95)})`;
+            }
+        });
+
+        const logoSwapObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    logoElement.style.opacity = '0';
+                    setTimeout(() => { logoElement.src = 'png/logoWhite.png'; logoElement.style.opacity = '1'; }, 150);
+                } else {
+                    logoElement.style.opacity = '0';
+                    setTimeout(() => { logoElement.src = 'png/logo.png'; logoElement.style.opacity = '0.9'; }, 150);
+                }
+            });
+        }, { root: null, threshold: 0.15 });
+
+        logoSwapObserver.observe(curtainSection);
+
+        /* ==========================================================================
+           4. Paper Card Stack Shuffle Controller
+           ========================================================================== */
+        const deckContainer = document.getElementById('paperStackDeck');
+        let canShuffle = true; 
+
+        deckContainer.addEventListener('click', () => {
+            if (!canShuffle) return; 
+            canShuffle = false;
+
+            // Instantly fires the zero-latency paper deck shuffle noise
+            audioManager.playInstant('paper', 0.65);
+
+            let cards = deckContainer.querySelectorAll('.paper-card');
+            let topCard = cards[0];
+
+            topCard.classList.add('shuffling-out');
+
+            setTimeout(() => {
+                topCard.classList.remove('shuffling-out');
+                deckContainer.appendChild(topCard);
+
+                const updatedCards = deckContainer.querySelectorAll('.paper-card');
+                updatedCards.forEach((card, index) => {
+                    card.style.setProperty('--card-index', index);
+                });
+
+                canShuffle = true;
+            }, 550); 
+        });
     </script>
 </body>
 </html>
