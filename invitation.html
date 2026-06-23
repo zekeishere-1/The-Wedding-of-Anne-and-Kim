@@ -18,7 +18,8 @@
     <div class="scroll-wrapper">
         
         <section id="heroSection" class="hero-container">
-            <div id="heroContent" class="hero-content">
+            <div id="heroContent" class="hero-content luxury-card">
+                
                 <header class="content-header">
                     <h2 class="section-subtitle">A Promise for a Lifetime</h2>
                 </header>
@@ -72,6 +73,9 @@
                     <div class="paper-card" style="--card-index: 2;">
                         <img src="png/page3.png" alt="Invitation Sheet 3" class="paper-img">
                     </div>
+                    <div class="paper-card" style="--card-index: 3;">
+                        <img src="png/page4.png" alt="Invitation Sheet 4" class="paper-img">
+                    </div>
                 </div>
 
             </div>
@@ -102,7 +106,6 @@
         /* ==========================================================================
            2. Visual Countdown Timer Logic Engine
            ========================================================================== */
-        // CHANGED: Target date updated strictly to July 25, 2026 at 10:00 AM
         const targetEventDate = new Date("July 25, 2026 10:00:00").getTime();
 
         function updateCountdownClock() {

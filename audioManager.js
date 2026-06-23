@@ -5,7 +5,7 @@
 class AudioManager {
     constructor() {
         this.ctx = null;
-        this.buffers = { paper: null }; // Maintained exclusively for the instant sheet shuffle
+        this.buffers = { paper: null }; 
         this.bgMusicSource = null;
         this.bgMusicGain = null;
         this.isUnlocked = false;
@@ -20,13 +20,13 @@ class AudioManager {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         this.ctx = new AudioContext();
 
-        // Load only the paper asset straight into RAM memory
+        // Load the paper flick sound straight into RAM memory
         await this._loadToRAM('audio/paper_shuffle.mp3', 'paper');
 
         this.isUnlocked = true;
         
-        // Start the background music ambiance
-        this._startBGMusic('audio/yourLove.mp3');
+        // Start the beautiful background music ambiance
+        this._startBGMusic('audio/BeautifulSoul.mp3');
     }
 
     /**
@@ -57,7 +57,7 @@ class AudioManager {
             this.bgMusicSource.buffer = musicBuffer;
             this.bgMusicSource.loop = true;
 
-            // Keeps yourLove.mp3 mixed as a soft, warm background whisper
+            // Soft mixing level so it acts as background whisper music
             this.bgMusicGain = this.ctx.createGain();
             this.bgMusicGain.gain.setValueAtTime(0.06, this.ctx.currentTime);
 
@@ -87,5 +87,5 @@ class AudioManager {
     }
 }
 
-// Export a single global instance for the application layout to share
+// Export single global instance
 const audioManager = new AudioManager();

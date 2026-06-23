@@ -5,24 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wedding Invitation</title>
     <link rel="stylesheet" href="style.css">
+    <script src="audioManager.js"></script>
 </head>
 <body>
 
-    <!-- Premium Page Transition Overlay -->
     <div class="page-transition-overlay" id="fadeOverlay"></div>
 
-    <!-- Main Fluid Layout Container -->
     <main class="main-container">
         
-        <!-- Welcome Subtitle -->
         <h1 class="wedding-subtitle">WELCOME TO THE WEDDING OF</h1>
         
-        <!-- Celebrant Names Graphic -->
         <div class="names-container">
             <img src="png/anneandkim.png" alt="Anne & Kim" class="names-img">
         </div>
         
-        <!-- Interactive Envelope Container -->
         <div class="envelope-container">
             <img 
                 src="png/newEnvelope.png" 
@@ -33,17 +29,25 @@
             >
         </div>
 
-        <!-- Instructional Caption -->
         <p class="click-caption">CLICK ENVELOPE TO OPEN...</p>
 
     </main>
 
     <script>
         function triggerTransition() {
+            // Unlocks and starts BeautifulSoul.mp3 instantly on envelope tap
+            try {
+                audioManager.init();
+            } catch(e) {
+                console.log("Audio contextual unlock waiting...");
+            }
+
             const overlay = document.getElementById('fadeOverlay');
             overlay.classList.add('active');
+            
             setTimeout(function() {
-                window.location.href = 'invitation.html';
+                // Pass startAudio flag to keep music running on invitation.html
+                window.location.href = 'invitation.html?startAudio=true';
             }, 800); 
         }
     </script>
