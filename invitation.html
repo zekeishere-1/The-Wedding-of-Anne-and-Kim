@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <nav class="top-nav">
+    <nav class="top-nav" id="topNavbar">
         <a href="index.html" class="logo-link">
             <img src="png/logo.png" alt="Wedding Logo" id="navLogo" class="nav-logo">
         </a>
@@ -54,39 +54,74 @@
             </div>
         </section>
 
-        <section id="curtainSection" class="framed-details-section">
+        <section id="curtainSection" class="framed-details-section dynamic-reveal">
             
-            <div class="deck-wrapper-relative">
+            <div class="booth-container reveal-element">
                 
-                <div id="deckTapHint" class="deck-hint-overlay">
-                    <span class="hint-icon-ripple"></span>
-                    <span class="hint-text-label">Tap to Flip</span>
+                <div class="booth-asset-header">
+                    <img src="png/capturedmoments.png" alt="Captured Moments" class="captured-moments-title">
+                </div>
+                
+                <div class="printer-machine">
+                    <div class="printer-shine"></div>
+                    <div class="printer-slot">
+                        <div class="slot-shadow"></div>
+                    </div>
                 </div>
 
-                <div class="paper-stack-deck" id="paperStackDeck">
-                    <div class="paper-card" style="--card-index: 0;">
-                        <img src="png/page1.png" alt="Invitation Sheet 1" class="paper-img">
-                    </div>
-                    <div class="paper-card" style="--card-index: 1;">
-                        <img src="png/page2.png" alt="Invitation Sheet 2" class="paper-img">
-                    </div>
-                    <div class="paper-card" style="--card-index: 2;">
-                        <img src="png/page3.png" alt="Invitation Sheet 3" class="paper-img">
-                    </div>
-                    <div class="paper-card" style="--card-index: 3;">
-                        <img src="png/page4.png" alt="Invitation Sheet 4" class="paper-img">
-                    </div>
+                <div class="strip-mask" id="stripMask">
+                    <div class="photostrip" id="photostrip"></div>
                 </div>
 
             </div>
 
         </section>
 
+        <section class="polaroid-deck-container dynamic-reveal">
+            
+            <div class="polaroid-table reveal-element" id="polaroidTable">
+                <div class="floating-photo f-card-1">
+                    <img src="png/pic1.png" alt="Celebration 1">
+                </div>
+                <div class="floating-photo f-card-2">
+                    <img src="png/pic2.png" alt="Celebration 2">
+                </div>
+                <div class="floating-photo f-card-3">
+                    <img src="png/pic3.png" alt="Celebration 3">
+                </div>
+                <div class="floating-photo f-card-4">
+                    <img src="png/pic4.png" alt="Celebration 4">
+                </div>
+                <div class="floating-photo f-card-5">
+                    <img src="png/pic5.png" alt="Celebration 5">
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <button class="view-invitation-btn" id="openGalleryBtn">
+        Click to View Invitation
+    </button>
+
+    <div class="lightbox-overlay" id="lightboxOverlay">
+        <button class="lightbox-close" id="closeGalleryBtn">&times;</button>
+        
+        <div class="lightbox-window">
+            <button class="lightbox-arrow left-arrow" id="prevPageBtn">&#8249;</button>
+            
+            <div class="lightbox-stage">
+                <img src="png/page1.png" alt="Invitation Page" id="lightboxImage">
+                <div class="page-indicator" id="pageIndicator">Page 1 of 4</div>
+            </div>
+            
+            <button class="lightbox-arrow right-arrow" id="nextPageBtn">&#8250;</button>
+        </div>
     </div>
 
     <script>
         /* ==========================================================================
-           1. Global Interaction Triggers
+           1. Global Interaction Triggers & Audio Activation
            ========================================================================== */
         function triggerAudioUnlock() {
             audioManager.init();
@@ -133,9 +168,10 @@
         const clockIntervalEngine = setInterval(updateCountdownClock, 1000);
 
         /* ==========================================================================
-           3. Viewport Transitions & Scroll Layout Tracking
+           3. Viewport Transitions & Dynamic Nav Dismissal
            ========================================================================== */
         const logoElement = document.getElementById('navLogo');
+        const topNavbar = document.getElementById('topNavbar');
         const curtainSection = document.getElementById('curtainSection');
         const heroContent = document.getElementById('heroContent');
 
@@ -155,50 +191,134 @@
         const logoSwapObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    logoElement.style.opacity = '0';
-                    setTimeout(() => { logoElement.src = 'png/logoWhite.png'; logoElement.style.opacity = '1'; }, 150);
+                    topNavbar.classList.add('nav-hidden-state');
                 } else {
-                    logoElement.style.opacity = '0';
-                    setTimeout(() => { logoElement.src = 'png/logo.png'; logoElement.style.opacity = '0.9'; }, 150);
+                    topNavbar.classList.remove('nav-hidden-state');
                 }
             });
-        }, { root: null, threshold: 0.15 });
+        }, { root: null, threshold: 0.05 });
 
         logoSwapObserver.observe(curtainSection);
 
+        const revealTransitionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal-active');
+                }
+            });
+        }, { root: null, threshold: 0.12 });
+
+        document.querySelectorAll('.dynamic-reveal').forEach(section => {
+            revealTransitionObserver.observe(section);
+        });
+
         /* ==========================================================================
-           4. Paper Card Stack Shuffle Controller
+           4. Dynamic Photo Strip Generation (SKIPS 6 AND 7)
            ========================================================================== */
-        const deckContainer = document.getElementById('paperStackDeck');
-        const hintNotice = document.getElementById('deckTapHint');
-        let canShuffle = true; 
-
-        deckContainer.addEventListener('click', () => {
-            if (!canShuffle) return; 
-            canShuffle = false;
-
-            if (hintNotice) {
-                hintNotice.classList.add('hint-dismissed');
+        const photostrip = document.getElementById('photostrip');
+        const stripMask = document.getElementById('stripMask');
+        const totalPhotos = 14; 
+        
+        let stripHTML = '';
+        for (let i = 1; i <= totalPhotos; i++) {
+            if (i === 6 || i === 7) {
+                continue; 
             }
+            stripHTML += `
+                <div class="photo-frame">
+                    <img src="photoBooth/p${i}.png" alt="Photobooth Image ${i}" loading="lazy">
+                </div>
+            `;
+        }
+        
+        stripHTML += `
+            <div class="strip-footer-tail">
+                <div class="dashed-divider"></div>
+                <div class="footer-text-wrap">
+                    <p class="main-title">The Wedding of <br> Anne and Kim</p>
+                </div>
+            </div>
+        `;
+        photostrip.innerHTML = stripHTML;
 
-            audioManager.playInstant('paper', 0.65);
+        let hasPrinted = false;
 
-            let cards = deckContainer.querySelectorAll('.paper-card');
-            let topCard = cards[0];
+        const printerObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !hasPrinted) {
+                    hasPrinted = true; 
+                    startMechanicalPrint();
+                }
+            });
+        }, { root: null, threshold: 0.25 });
 
-            topCard.classList.add('shuffling-out');
+        printerObserver.observe(curtainSection);
+
+        function startMechanicalPrint() {
+            photostrip.classList.add('is-printing');
+
+            try {
+                audioManager.playInstant('paper', 0.8);
+            } catch(e) {}
 
             setTimeout(() => {
-                topCard.classList.remove('shuffling-out');
-                deckContainer.appendChild(topCard);
+                stripMask.style.overflowY = 'auto';
+            }, 18000);
+        }
 
-                const updatedCards = deckContainer.querySelectorAll('.paper-card');
-                updatedCards.forEach((card, index) => {
-                    card.style.setProperty('--card-index', index);
-                });
+        /* ==========================================================================
+           5. Interactive 4-Page Lightbox Gallery Engine
+           ========================================================================== */
+        const pages = ['png/page1.png', 'png/page2.png', 'png/page3.png', 'png/page4.png'];
+        let currentPageIndex = 0;
 
-                canShuffle = true;
-            }, 550); 
+        const lightboxOverlay = document.getElementById('lightboxOverlay');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const pageIndicator = document.getElementById('pageIndicator');
+        
+        const openGalleryBtn = document.getElementById('openGalleryBtn');
+        const closeGalleryBtn = document.getElementById('closeGalleryBtn');
+        const prevPageBtn = document.getElementById('prevPageBtn');
+        const nextPageBtn = document.getElementById('nextPageBtn');
+
+        function updateLightboxImage() {
+            lightboxImage.style.opacity = '0';
+            setTimeout(() => {
+                lightboxImage.src = pages[currentPageIndex];
+                pageIndicator.innerText = `Page ${currentPageIndex + 1} of 4`;
+                lightboxImage.style.opacity = '1';
+            }, 150);
+        }
+
+        openGalleryBtn.addEventListener('click', () => {
+            currentPageIndex = 0; 
+            updateLightboxImage();
+            lightboxOverlay.classList.add('is-visible');
+            document.body.style.overflow = 'hidden'; 
+        });
+
+        closeGalleryBtn.addEventListener('click', () => {
+            lightboxOverlay.classList.remove('is-visible');
+            document.body.style.overflow = ''; 
+        });
+
+        nextPageBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentPageIndex = (currentPageIndex + 1) % pages.length;
+            updateLightboxImage();
+        });
+
+        prevPageBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentPageIndex = (currentPageIndex - 1 + pages.length) % pages.length;
+            updateLightboxImage();
+        });
+
+        lightboxOverlay.addEventListener('click', (e) => {
+            if (e.target === lightboxOverlay) {
+                lightboxOverlay.classList.remove('is-visible');
+                document.body.style.overflow = '';
+            }
         });
     </script>
 </body>

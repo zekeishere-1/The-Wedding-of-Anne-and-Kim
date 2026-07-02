@@ -29,7 +29,7 @@ body {
 }
 
 /* ==========================================================================
-   3. Fixed Logo Navigation Layer
+   3. Fixed Logo Navigation Layer & Dynamic Fades
    ========================================================================= */
 .top-nav {
     position: fixed; 
@@ -38,6 +38,16 @@ body {
     transform: translateX(-50%); 
     z-index: 100;
     text-align: center;
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out, visibility 0.4s;
+    visibility: visible;
+    opacity: 1;
+}
+
+.top-nav.nav-hidden-state {
+    opacity: 0 !important;
+    transform: translate3d(-50%, -20px, 0) !important;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .logo-link {
@@ -88,32 +98,26 @@ body {
     z-index: 1; 
 }
 
-/* Tailored Liquid Glass Container */
 .hero-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    
     width: auto;
     max-width: 100%;
     min-width: clamp(290px, 60vw, 540px);
-    
     background-color: rgba(255, 255, 255, 0.45); 
     -webkit-backdrop-filter: blur(20px); 
     backdrop-filter: blur(20px); 
     border: 1px solid rgba(107, 122, 163, 0.25);
     border-radius: 16px; 
-    
     padding: clamp(2rem, 5vw, 3.5rem);
     padding-top: clamp(3.5rem, 6vw, 4.5rem); 
     padding-bottom: 2.5rem;
-    
     box-shadow: 
         0 4px 24px rgba(0, 0, 0, 0.02),
         0 20px 50px rgba(74, 62, 61, 0.07),
         inset 0 1px 0px rgba(255, 255, 255, 0.4);
-    
     position: relative;
     transition: opacity 0.1s ease-out, transform 0.1s ease-out;
     will-change: opacity, transform;
@@ -198,9 +202,6 @@ body {
     letter-spacing: 2px;
 }
 
-/* ==========================================================================
-   7b. Scroll Notice Component Styles
-   ========================================================================== */
 .scroll-notice {
     display: flex;
     flex-direction: column;
@@ -235,7 +236,7 @@ body {
 }
 
 /* ==========================================================================
-   8. Curtain Backdrop Overlapping Layer
+   8. Structural Padding & Curtain Image Call
    ========================================================================== */
 .framed-details-section {
     min-height: 100vh; 
@@ -243,180 +244,454 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 11rem 2rem 5rem 2rem; 
-    
+    padding: 10rem 2rem 6rem 2rem; 
     background-image: url('png/curtain.png');
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover; 
-    
     position: relative;
     z-index: 2; 
     box-shadow: 0 -15px 35px rgba(0, 0, 0, 0.15); 
 }
 
 /* ==========================================================================
-   9. Pure Paper Interactive Stacking & Kinetic Shuffling Layout Architecture
+   9. Cinematic Scroll Trigger Fade Animations
    ========================================================================== */
-.deck-wrapper-relative {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-
-.paper-stack-deck {
-    position: relative;
-    width: 100%;
-    max-width: 400px; 
-    height: 560px;
-    margin: 0 auto;
-    cursor: pointer;
-    perspective: 1200px; 
-}
-
-.paper-card {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    
-    border-radius: 0px !important; 
-    background: none;
-    z-index: calc(15 - var(--card-index));
-    
-    transform: 
-        translateY(calc(var(--card-index) * 12px)) 
-        translateX(calc(var(--card-index) * -6px))
-        rotate(calc(var(--card-index) * -2.5deg));
-        
-    box-shadow: 
-        calc(-4px - (var(--card-index) * 2px))
-        calc(8px + (var(--card-index) * 4px))
-        calc(15px + (var(--card-index) * 5px))
-        rgba(0, 0, 0, calc(0.18 - (var(--card-index) * 0.03)));
-
-    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), 
-                box-shadow 0.5s cubic-bezier(0.19, 1, 0.22, 1),
-                z-index 0.5s linear;
-}
-
-.paper-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 0px !important; 
-    display: block;
-}
-
-.paper-stack-deck:hover .paper-card {
-    transform: 
-        translateY(calc(var(--card-index) * 22px)) 
-        translateX(calc(var(--card-index) * -12px))
-        rotate(calc(var(--card-index) * -4deg));
-    box-shadow: 
-        calc(-8px - (var(--card-index) * 3px))
-        calc(16px + (var(--card-index) * 6px))
-        calc(25px + (var(--card-index) * 8px))
-        rgba(0, 0, 0, calc(0.22 - (var(--card-index) * 0.03)));
-}
-
-.paper-card.shuffling-out {
-    animation: slideAndTossBack 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
-
-@keyframes slideAndTossBack {
-    0% {
-        transform: translateY(0) translateX(0) rotate(0deg);
-        z-index: 20;
-    }
-    45% {
-        transform: translateY(-40px) translateX(115%) rotate(12deg);
-        box-shadow: 25px 30px 50px rgba(0, 0, 0, 0.3);
-        z-index: 20;
-    }
-    50% { z-index: 1; }
-    100% {
-        transform: translateY(36px) translateX(-18px) rotate(-7.5deg);
-        z-index: 1;
-    }
-}
-
-/* ==========================================================================
-   9b. Tap to Flip Invitation Micro-Notice Tooltip Styling
-   ========================================================================== */
-.deck-hint-overlay {
-    position: absolute;
-    top: -45px; 
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    z-index: 30; 
-    pointer-events: none; 
+.dynamic-reveal {
     opacity: 0;
-    animation: hintFadeInEntrance 1.4s ease-out 0.6s forwards;
-    transition: opacity 0.4s cubic-bezier(0.19, 1, 0.22, 1), transform 0.4s ease-out;
-    will-change: opacity, transform;
+    transform: translateY(35px);
+    transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), 
+                transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, opacity;
 }
 
-.hint-text-label {
-    font-family: 'PP Editorial New', serif;
-    font-size: 13px;
-    letter-spacing: 2px;
-    color: #FFFAF0; 
-    text-transform: uppercase;
-    font-weight: 200;
-    text-shadow: 0 2px 5px rgba(74, 62, 61, 0.24);
+.dynamic-reveal .reveal-element {
+    opacity: 0;
+    transform: scale(0.97) translateY(15px);
+    transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s, 
+                transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+    will-change: transform, opacity;
 }
 
-.hint-icon-ripple {
-    width: 6px;
-    height: 6px;
-    background-color: #6B7AA3; 
-    border-radius: 50%;
-    position: relative;
+.dynamic-reveal.reveal-active {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.hint-icon-ripple::after {
-    content: '';
-    position: absolute;
-    top: -6px;
-    left: -6px;
-    width: 18px;
-    height: 18px;
-    border: 1px solid rgba(107, 122, 163, 0.4); 
-    border-radius: 50%;
-    animation: continuousPulseWave 1.8s infinite ease-out;
+.dynamic-reveal.reveal-active .reveal-element {
+    opacity: 1;
+    transform: scale(1) translateY(0);
 }
 
-.deck-hint-overlay.hint-dismissed {
-    opacity: 0 !important;
-    transform: translate3d(0, -12px, 0);
-}
-
-@keyframes hintFadeInEntrance {
-    0% { opacity: 0; transform: translate3d(0, 6px, 0); }
-    100% { opacity: 1; transform: translate3d(0, 0, 0); }
-}
-
-@keyframes continuousPulseWave {
-    0% { transform: scale(0.6); opacity: 1; }
-    100% { transform: scale(1.5); opacity: 0; }
-}
-
-/* ==========================================================================
-   10. Entry Animation Keyframes
-   ========================================================================== */
 @keyframes fadeInInvitationPage {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
 /* ==========================================================================
-   11. Comprehensive Responsive Mobile/Tablet Optimization Engine
+   11. Premium Floating Photo Stacked Layout
    ========================================================================== */
+.polaroid-deck-container {
+    position: relative;
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f6f5f2;
+    overflow: hidden;
+    padding: 8rem 2rem 8rem 2rem; /* Increased top padding to push the layout slightly lower away from top navbar */
+    z-index: 3;
+}
+
+.polaroid-table {
+    position: relative;
+    width: 100%;
+    max-width: 850px; 
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px; /* Gently nudges the entire stack down to avoid any header overlaps */
+}
+
+.floating-photo {
+    position: absolute;
+    width: 230px; 
+    background: transparent;
+    padding: 0;
+    border: none;
+    top: 50%;
+    left: 50%;
+    margin-top: -130px; /* Adjusted slightly down from original -150px to safely move cards lower */
+    margin-left: -115px;
+    filter: drop-shadow(0 6px 15px rgba(35, 30, 29, 0.08));
+    pointer-events: none; 
+}
+
+.floating-photo img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.f-card-1 { transform: translate3d(-240px, -110px, 0) rotate(-7deg); z-index: 10; }
+.f-card-2 { transform: translate3d(200px, -90px, 0) rotate(5deg); z-index: 11; }
+.f-card-3 { transform: translate3d(0px, -20px, 0) rotate(-2deg); z-index: 14; }
+.f-card-4 { transform: translate3d(-170px, 120px, 0) rotate(-4deg); z-index: 12; }
+.f-card-5 { transform: translate3d(180px, 110px, 0) rotate(6deg); z-index: 13; }
+
+/* ==========================================================================
+   12. Metallic Mechanical Photobooth Layout Architecture & Headers
+   ========================================================================== */
+.booth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.booth-asset-header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2.2rem;
+    pointer-events: none; 
+    user-select: none;
+    z-index: 20;
+}
+
+.captured-moments-title {
+    width: 380px; 
+    max-width: 95%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 3px 12px rgba(0, 0, 0, 0.4)); 
+}
+
+.printer-machine {
+    width: 340px;
+    height: 74px;
+    background: linear-gradient(180deg, #bdc3c7 0%, #95a5a6 40%, #7f8c8d 100%);
+    border-radius: 10px 10px 3px 3px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-bottom: 4px solid #5d6869;
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        0 18px 35px rgba(0, 0, 0, 0.25),
+        inset 0 1.5px 0px rgba(255, 255, 255, 0.4);
+    overflow: hidden;
+}
+
+.printer-shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+    transform: skewX(-30deg);
+    animation: metalSheen 7s infinite ease-in-out;
+}
+
+.printer-slot {
+    width: 284px;
+    height: 12px;
+    background-color: #1a1716;
+    border-radius: 4px;
+    bottom: 14px;
+    position: absolute;
+    border-top: 1px solid rgba(0, 0, 0, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    overflow: hidden;
+}
+
+.slot-shadow {
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.85);
+}
+
+.strip-mask {
+    width: 262px;
+    height: 650px; 
+    position: relative;
+    top: -12px;
+    overflow-y: hidden; 
+    z-index: 5;
+    transition: box-shadow 0.5s ease;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(107, 122, 163, 0.3) transparent;
+}
+
+.strip-mask::-webkit-scrollbar {
+    width: 4px;
+}
+.strip-mask::-webkit-scrollbar-thumb {
+    background-color: rgba(107, 122, 163, 0.3);
+    border-radius: 4px;
+}
+
+/* ==========================================================================
+   13. Photostrip Physics & Paper Texture Delivery
+   ========================================================================== */
+.photostrip {
+    width: 100%;
+    padding: 30px 16px 40px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 12px 45px rgba(50, 40, 39, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transform: translateY(calc(-100% + 650px));
+    will-change: transform;
+    background-color: #fcfbf9;
+    background-image: 
+        linear-gradient(90deg, rgba(0,0,0,0.015) 50%, transparent 50%),
+        linear-gradient(rgba(0,0,0,0.015) 50%, transparent 50%);
+    background-size: 3px 3px;
+}
+
+.photostrip.is-printing {
+    animation: print-descent 18s linear forwards;
+}
+
+.photo-frame {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    background-color: #ffffff;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.02);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    position: relative;
+}
+
+.photo-frame::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    border: 1px solid rgba(0,0,0,0.04);
+    pointer-events: none;
+}
+
+.photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.strip-footer-tail {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5px;
+    padding-bottom: 30px;
+    margin-top: 5px;
+}
+
+.dashed-divider {
+    width: 100%;
+    height: 1px;
+    border-top: 1px dashed rgba(160, 150, 147, 0.45);
+    margin-bottom: 25px;
+}
+
+.footer-text-wrap {
+    text-align: center;
+    max-width: 90%;
+}
+
+.footer-text-wrap .main-title {
+    font-family: 'PP Editorial New', serif;
+    font-size: 20px; 
+    color: #4a4342;
+    letter-spacing: 0.5px; 
+    line-height: 1.35; 
+    font-weight: normal;
+    text-transform: none; 
+}
+
+@keyframes print-descent {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes metalSheen {
+    0% { left: -100%; }
+    20% { left: 150%; }
+    100% { left: 150%; }
+}
+
+/* ==========================================================================
+   14. Fixed Floating Liquid Glass Action Button Style 
+   ========================================================================== */
+.view-invitation-btn {
+    font-family: 'PP Editorial New', serif;
+    color: #3d3332;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    
+    /* Strict One-Liner Rule Constraints */
+    white-space: nowrap;
+    word-break: keep-all;
+    
+    /* Touch optimization proportions */
+    padding: 0.9rem 2.5rem;
+    font-size: 16px;
+    min-height: 48px; 
+    letter-spacing: 1.5px;
+    border-radius: 50px;
+    cursor: pointer;
+    
+    /* Global fixed position layout overrides */
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 400; 
+
+    /* Liquid Glass styling engine formulas */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(240, 244, 255, 0.25) 100%);
+    -webkit-backdrop-filter: blur(14px) saturate(120%);
+    backdrop-filter: blur(14px) saturate(120%);
+    
+    box-shadow: 
+        0 4px 10px rgba(0, 0, 0, 0.03),
+        0 12px 28px rgba(107, 122, 163, 0.15),
+        inset 0 1px 2px rgba(255, 255, 255, 0.6),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+        
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                background-color 0.3s ease, 
+                box-shadow 0.3s ease,
+                border-color 0.3s ease;
+}
+
+.view-invitation-btn:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(220, 230, 255, 0.35) 100%);
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 
+        0 6px 14px rgba(0, 0, 0, 0.04),
+        0 16px 35px rgba(107, 122, 163, 0.25),
+        inset 0 1px 3px rgba(255, 255, 255, 0.8);
+    transform: translateX(-50%) scale(1.03) translateY(-2px);
+}
+
+/* Active touch feedback */
+.view-invitation-btn:active {
+    transform: translateX(-50%) scale(0.97) translateY(0);
+    background: linear-gradient(135deg, rgba(240, 240, 240, 0.5) 0%, rgba(200, 215, 255, 0.3) 100%);
+}
+
+/* ==========================================================================
+   15. Luxury Lightbox Modal Stage Overlay Architecture
+   ========================================================================== */
+.lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(26, 23, 22, 0.96); 
+    z-index: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s;
+}
+
+.lightbox-overlay.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 25px;
+    right: 35px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 42px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    z-index: 510;
+}
+
+.lightbox-close:hover {
+    color: #ffffff;
+}
+
+.lightbox-window {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 2rem;
+    position: relative;
+}
+
+.lightbox-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 600px; /* Enhanced slightly for wide view desktop clarity */
+    width: 100%;
+}
+
+.lightbox-stage img {
+    width: 100%;
+    height: auto;
+    max-height: 78vh;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.65);
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.page-indicator {
+    font-family: 'PP Editorial New', serif;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 1.2rem;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.lightbox-arrow {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 64px;
+    cursor: pointer;
+    padding: 2rem;
+    transition: color 0.2s ease, transform 0.2s ease;
+    user-select: none;
+}
+
+.lightbox-arrow:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+/* ==========================================================================
+   16. Responsive Phone Size Overrides
+   ========================================================================= */
 @media (max-width: 768px) {
     .top-nav {
         top: 25px;
@@ -426,49 +701,165 @@ body {
         width: 90px; 
     }
 
-    .framed-details-section {
-        padding-top: 7rem; 
+    .captured-moments-title {
+        width: 280px; 
+        max-width: 90%;
+    }
+    
+    .polaroid-deck-container {
+        padding-top: 7rem;
+    }
+
+    .polaroid-table {
+        height: 520px;
+        margin-top: 50px;
+    }
+    
+    .floating-photo {
+        width: 130px; 
+        margin-top: -65px;
+        margin-left: -65px;
+    }
+    
+    .f-card-1 { transform: translate3d(-85px, -140px, 0) rotate(-6deg); }
+    .f-card-2 { transform: translate3d(80px, -110px, 0) rotate(5deg); }
+    .f-card-3 { transform: translate3d(0px, 15px, 0) rotate(-1deg); }
+    .f-card-4 { transform: translate3d(-75px, 140px, 0) rotate(-4deg); }
+    .f-card-5 { transform: translate3d(75px, 125px, 0) rotate(4deg); }
+
+    .framed-details-section { 
+        padding-top: 8rem; 
         padding-bottom: 3rem;
     }
+    .printer-machine { 
+        width: 290px; 
+        height: 68px; 
+    }
+    .printer-slot { 
+        width: 242px; 
+        bottom: 12px;
+    }
+    .strip-mask { 
+        width: 222px; 
+        height: 520px; 
+    }
+    .photostrip {
+        transform: translateY(calc(-100% + 520px));
+    }
+    .dashed-divider {
+        margin-bottom: 20px;
+    }
+    .footer-text-wrap .main-title {
+        font-size: 17px;
+        line-height: 1.3;
+    }
 
-    .paper-stack-deck {
-        max-width: 285px;
-        height: 400px;
+    /* Fixed Button Phone Layout Calibration */
+    .view-invitation-btn {
+        bottom: 24px;
+        font-size: 14px;
+        padding: 0.8rem 1.6rem; 
+        letter-spacing: 1px;
+    }
+/* ==========================================================================
+       CRITICAL MOBILE LIGHTBOX SCREEN MAXIMIZATION OVERRIDES
+       ========================================================================== */
+    .lightbox-window {
+        padding: 0 0.5rem; 
+        padding-bottom: 80px; /* Creates a dedicated dark space below the image so controls never overlap */
+        flex-direction: column; 
+    }
+
+    .lightbox-stage {
+        max-width: 96vw; 
+    }
+
+    .lightbox-stage img {
+        max-height: 78vh; /* Adjusted slightly so it comfortably clears room for the bottom navigation zone */
+        border-radius: 4px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    }
+
+    .lightbox-close {
+        top: 16px;
+        right: 20px;
+        font-size: 38px;
+    }
+
+    .page-indicator {
+        margin-top: 15px;
+        font-size: 13px;
+    }
+
+    /* Position the navigational tap arrows down into the clear black zone below the graphic */
+    .lightbox-arrow {
+        position: absolute;
+        bottom: 15px; /* Anchors the arrows cleanly inside the safe dark padding area */
+        font-size: 44px;
+        padding: 0.8rem;
+        z-index: 520;
     }
     
-    .scroll-line {
-        height: 25px;
-    }
-
-    .deck-hint-overlay {
-        top: -38px;
-    }
-}
-
-@media (max-width: 480px) {
-    .nav-logo {
-        width: 85px; 
-    }
-
-    .hero-content {
-        width: 90%;          
-        padding: 2.2rem 1rem 1.2rem 1rem;  
-        padding-top: 3.5rem; 
-    }
-
-    .clock-display {
-        gap: 0.85rem; 
-    }
-
-    .time-block {
-        min-width: 52px; 
-    }
-
-    .time-number {
-        font-size: 28px; 
+    .left-arrow {
+        left: 15%; /* Spaced slightly wider apart for a cleaner look around the text */
     }
     
-    .scroll-notice {
-        gap: 4px;
+    .right-arrow {
+        right: 15%;
     }
-}
+
+    /* ==========================================================================
+       CRITICAL MOBILE LIGHTBOX SCREEN MAXIMIZATION OVERRIDES
+       ========================================================================== */
+    .lightbox-window {
+        padding: 0 0.5rem; 
+        padding-bottom: 90px; /* Room for the unified navigation bar */
+        flex-direction: column; 
+        position: relative;
+    }
+
+    .lightbox-stage {
+        max-width: 96vw; 
+    }
+
+    .lightbox-stage img {
+        max-height: 76vh; /* Prevents taller images from pushing down the navigation row */
+        border-radius: 4px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    }
+
+    .lightbox-close {
+        top: 16px;
+        right: 20px;
+        font-size: 38px;
+    }
+
+    /* ==========================================================================
+       UNIFIED BOTTOM NAVIGATION BAR (Arrows + Page Number Aligned)
+       ========================================================================== */
+    .page-indicator {
+        position: absolute;
+        bottom: 28px; /* Perfectly aligns horizontally with the center of the arrows */
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 0;
+        font-size: 14px;
+        letter-spacing: 1px;
+        z-index: 530;
+    }
+
+    .lightbox-arrow {
+        position: absolute;
+        bottom: 12px; /* Anchored to the exact same baseline level */
+        font-size: 44px;
+        padding: 0.8rem;
+        z-index: 520;
+    }
+    
+    .left-arrow {
+        left: 20%; /* Safely frames the left side of "Page 3 of 4" */
+    }
+    
+    .right-arrow {
+        right: 20%; /* Safely frames the right side of "Page 3 of 4" */
+    }
